@@ -12,22 +12,8 @@ import kotlin.system.exitProcess
  */
 
 val data = listOf<Int>(9, 11, 8, 5, 7, 10, 4)
-var previousPrice = 0
 
-fun findLowestPrice(data: List<Int>): Int {
-    val tempData = data.filter { n: Int -> n > previousPrice }
-    println(tempData)
-    return tempData.minOf { n: Int -> n }
-}
-
-fun lowerPriceIndex(actualPrice: Int, data: List<Int>): Int {
-    return data.indexOfFirst { n -> n == actualPrice }
-}
-
-fun nextPricesData(actualPriceIndex: Int, data: List<Int>): List<Int> {
-    if (actualPriceIndex + 1 == data.size) {
-        return emptyList()
-    }
+fun nextStockPrices(actualPriceIndex: Int, data: List<Int>): List<Int> {
     return data.subList(actualPriceIndex + 1, data.size)
 }
 
@@ -36,22 +22,19 @@ fun findHighestValue(data: List<Int>): Int {
 }
 
 fun start() {
-    if (data.isEmpty()) {
-        exitProcess(0)
+    var diff = 0
+    data.forEachIndexed { index: Int, currentStock: Int ->
+        if (index + 1 < data.size) {
+            val nextPrices = nextStockPrices(index, data)
+            val highestStock = findHighestValue(nextPrices)
+            val tempDiff = highestStock - currentStock
+            if (tempDiff > diff) {
+                diff = tempDiff
+            }
+        }
     }
-    val lowestPrice = findLowestPrice(data)
-    println("Lowest price found: $lowestPrice")
-    val lowerPriceIndex = lowerPriceIndex(actualPrice = lowestPrice, data = data)
-    val nextPrices: List<Int> = nextPricesData(lowerPriceIndex, data)
-    if (nextPrices.isEmpty()) {
-        previousPrice = lowestPrice
-        println("Not enough data. Retry.")
-        println()
-        start()
-    } else {
-        val highestValueToSell = findHighestValue(nextPrices)
-        println("Min price: $lowestPrice, max price: $highestValueToSell, gain: ${highestValueToSell - lowestPrice}")
-    }
+    println("Highest diff found: $diff")
+    exitProcess(0)
 }
 
 start()
