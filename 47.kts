@@ -43,6 +43,7 @@ fun start() {
     println("Prices left: $nextPrices")
     if (nextPrices.isEmpty()) {
         data.removeAt(lowerPriceIndex)
+        println("Not enough data. Retry.")
         start()
     } else {
         val highestValueToSell = findHighestValue(nextPrices)
