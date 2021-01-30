@@ -40,14 +40,14 @@ fun start() {
     println("Lowest price found: $lowestPrice")
     val lowerPriceIndex = lowerPriceIndex(actualPrice = lowestPrice, data = data)
     val nextPrices: List<Int> = nextPricesData(lowerPriceIndex, data)
-    println("Prices left: $nextPrices")
     if (nextPrices.isEmpty()) {
         data.removeAt(lowerPriceIndex)
         println("Not enough data. Retry.")
+        println()
         start()
     } else {
         val highestValueToSell = findHighestValue(nextPrices)
-        println(highestValueToSell)
+        println("Min price: $lowestPrice, max price: $highestValueToSell, gain: ${highestValueToSell - lowestPrice}")
     }
 }
 
