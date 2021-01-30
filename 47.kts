@@ -37,6 +37,7 @@ fun start() {
         exitProcess(0)
     }
     val lowestPrice = findLowestPrice(data)
+    println("Lowest price found: $lowestPrice")
     val lowerPriceIndex = lowerPriceIndex(actualPrice = lowestPrice, data = data)
     val nextPrices: List<Int> = nextPricesData(lowerPriceIndex, data)
     println("Prices left: $nextPrices")
