@@ -11,10 +11,13 @@ import kotlin.system.exitProcess
  * since you could buy the stock at 5 dollars and sell it at 10 dollars.
  */
 
-val data = mutableListOf<Int>(9, 11, 8, 5, 7, 10, 4)
+val data = listOf<Int>(9, 11, 8, 5, 7, 10, 4)
+var previousPrice = 0
 
 fun findLowestPrice(data: List<Int>): Int {
-    return data.minOf { n: Int -> n }
+    val tempData = data.filter { n: Int -> n > previousPrice }
+    println(tempData)
+    return tempData.minOf { n: Int -> n }
 }
 
 fun lowerPriceIndex(actualPrice: Int, data: List<Int>): Int {
@@ -41,7 +44,7 @@ fun start() {
     val lowerPriceIndex = lowerPriceIndex(actualPrice = lowestPrice, data = data)
     val nextPrices: List<Int> = nextPricesData(lowerPriceIndex, data)
     if (nextPrices.isEmpty()) {
-        data.removeAt(lowerPriceIndex)
+        previousPrice = lowestPrice
         println("Not enough data. Retry.")
         println()
         start()
