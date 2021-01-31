@@ -13,27 +13,17 @@ import kotlin.system.exitProcess
 
 val data = listOf<Int>(9, 11, 8, 5, 7, 10, 4)
 
-fun nextStockPrices(actualPriceIndex: Int, data: List<Int>): List<Int> {
-    return data.subList(actualPriceIndex + 1, data.size)
-}
-
-fun findHighestValue(data: List<Int>): Int {
-    return data.maxOf { n: Int -> n }
-}
-
 fun start() {
-    var diff = 0
+    var maxDiffFound = 0
     data.forEachIndexed { index: Int, currentStock: Int ->
-        if (index + 1 < data.size) {
-            val nextPrices = nextStockPrices(index, data)
-            val highestStock = findHighestValue(nextPrices)
-            val tempDiff = highestStock - currentStock
-            if (tempDiff > diff) {
-                diff = tempDiff
+        if (index != data.size - 1) {
+            val currentMaxDiff = data.subList(index, data.size - 1).maxOf { n: Int -> n } - currentStock
+            if (currentMaxDiff > maxDiffFound) {
+                maxDiffFound = currentMaxDiff
             }
         }
     }
-    println("Highest diff found: $diff")
+    println("Highest diff found: $maxDiffFound")
     exitProcess(0)
 }
 
